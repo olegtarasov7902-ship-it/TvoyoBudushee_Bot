@@ -8,7 +8,7 @@ from gigachat import GigaChat
 # --- КОНФИГУРАЦИЯ ---
 # Рекомендую на Render использовать переменные окружения, но для начала вставь ключи сюда
 TG_TOKEN = "8735419644:AAGEzP-E9273IBWKlx0NnlbeyqT3_BPzLkI"
-GIGA_KEY = "ВАШ_GIGACHAT_KEY_MDE5Z..."
+GIGA_KEY = "MDE5ZGJjOTQtMWVjNS03M2U3LThkMzYtMzI4NmRkN2VmNDYwOjk2MDFjZTUzLTc5YmYtNDUxYi1iNTMyLWMzNmY5MDJhYzZmNg=="
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
