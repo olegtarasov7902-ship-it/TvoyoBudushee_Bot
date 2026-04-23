@@ -7,7 +7,7 @@ from gigachat import GigaChat
 
 # --- КОНФИГУРАЦИЯ ---
 # Рекомендую на Render использовать переменные окружения, но для начала вставь ключи сюда
-TG_TOKEN = "ВАШ_ТЕЛЕГРАМ_ТОКЕН"
+TG_TOKEN = "8735419644:AAGEzP-E9273IBWKlx0NnlbeyqT3_BPzLkI"
 GIGA_KEY = "ВАШ_GIGACHAT_KEY_MDE5Z..."
 
 # Настройка логирования
