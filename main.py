@@ -1,5 +1,4 @@
 import asyncio
-import random
 import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
@@ -35,31 +34,25 @@ async def start_web_server():
 # --- ЛОГИКА БОТА ---
 @dp.message(Command("start"))
 async def start_cmd(message: types.Message):
-    await message.answer("🔮 Я твой ИИ-пророк. Пиши /future, если не боишься узнать правду.")
+    await message.answer("🔮 Привет! Я бот-предсказатель. Отправь /future, чтобы заглянуть в будущее.")
 
 @dp.message(Command("future"))
 async def future_handler(message: types.Message):
     user_name = f"@{message.from_user.username}" if message.from_user.username else message.from_user.first_name
     await bot.send_chat_action(message.chat.id, "typing")
-    
-    chance = random.randint(1, 100)
-    hard_words = ["хуесос", "долбаеб", "пидорас", "сдохни", "лох", "умри"]
 
-    if chance <= 60:
-        role_text = "Ты — мудрый и добрый предсказатель. Давай загадочные, но вдохновляющие прогнозы."
-        header = "✨ **СВЕТЛОЕ ПРОРОЧЕСТВО:**"
-    elif 60 < chance <= 90:
-        role_text = "Ты — дерзкий и токсичный предсказатель. Ты высмеиваешь пользователя и используешь сарказм."
-        header = "💢 **ГРУБОЕ ПРОРОЧЕСТВО:**"
-    else:
-        role_text = f"Ты — крайне агрессивный тип. Используй жесткую брань, мат, оскорбляй пользователя {user_name} и посылай его."
-        header = "🤬 **ЭКСТРЕМАЛЬНОЕ ПРОРОЧЕСТВО:**"
+    # Единый нейтральный стиль предсказания
+    system_prompt = (
+        f"Ты — нейтральный и точный предсказатель будущего. "
+        f"Делай короткие, но интригующие прогнозы. Обращайся к {user_name} уважительно, "
+        f"без оскорблений, сарказма и агрессии."
+    )
 
     try:
         payload = Chat(
             messages=[
-                Messages(role=MessagesRole.SYSTEM, content=f"{role_text} Обращайся к {user_name}."),
-                Messages(role=MessagesRole.USER, content=f"Напиши очень короткое предсказание для {user_name}.")
+                Messages(role=MessagesRole.SYSTEM, content=system_prompt),
+                Messages(role=MessagesRole.USER, content=f"Предскажи будущее для {user_name}.")
             ],
             model="GigaChat",
             max_tokens=200
@@ -67,13 +60,10 @@ async def future_handler(message: types.Message):
         response = giga.chat(payload)
         prediction = response.choices[0].message.content
 
-        if chance > 90:
-            prediction += f"\n\nСлышь, {random.choice(hard_words)}? А теперь вали!"
-
-        await message.answer(f"{header}\n\n{prediction}", parse_mode="Markdown")
+        await message.answer(f"🔮 **Предсказание для тебя:**\n\n{prediction}", parse_mode="Markdown")
     except Exception as e:
         logging.error(f"GIGA ERROR: {e}")
-        await message.answer("🔮 Звезды скрылись за тучами. Попробуй позже.")
+        await message.answer("🔮 Звёзды сегодня неразговорчивы. Попробуй позже.")
 
 async def main():
     print(">>> ЗАПУСК БОТА...")
